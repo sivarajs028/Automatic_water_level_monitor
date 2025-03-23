@@ -6,7 +6,7 @@ ESP32
 
 HC-SR04 Ultrasonic Sensor
 
-SSD1306 0.96" OLED Display (Optional)
+SSD1306 0.96" OLED Display (Optional) 
 
 Buzzer (Optional for alert)
 
