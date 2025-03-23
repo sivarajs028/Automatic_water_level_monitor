@@ -1,56 +1,50 @@
 # Automatic_water_level_monitor
-Here is the ESP32-based Automatic Water Level Monitor using an Ultrasonic Sensor (HC-SR04). This version will display the water level on the Serial Monitor and an OLED Display (SSD1306, optional).
 
-Components Required:
-ESP32
+  # 🔧 Components Required:
+  
+  ESP32 Dev Board – Acts as the main controller to process water level data.
 
-HC-SR04 Ultrasonic Sensor
+  HC-SR04 Ultrasonic Sensor – Measures the water level by detecting the distance to the water surface.
 
-SSD1306 0.96" OLED Display (Optional) 
+  I2C 16x2 LCD Display – Displays the water level percentage.
 
-Buzzer (Optional for alert)
+  I2C Module for LCD – Converts the LCD to an I2C interface (if not already integrated).
 
-Jumper Wires
+  Buzzer (Optional) – Sounds an alert when the water level is too low.
 
-Circuit Connections:
-HC-SR04 Ultrasonic Sensor
+  Resistors (1KΩ and 2.2KΩ) – Used for voltage division to safely connect the HC-SR04's ECHO pin to ESP32.
+  
+  Jumper Wires – Required for making circuit connections.
 
-VCC → 3.3V (ESP32)
+  5V Power Source (USB or Adapter) – Supplies power to the ESP32 and other components.
 
-GND → GND
+  # 📌 Circuit Connections:
+  
+  # Connecting the HC-SR04 Ultrasonic Sensor to ESP32:
+  
+  Connect the VCC pin of the HC-SR04 to the 5V pin of the ESP32.  
 
-Trig → GPIO 5
+  Connect the GND pin of the HC-SR04 to the GND pin of the ESP32.
 
-Echo → GPIO 18 (Use a voltage divider to step down 5V to 3.3V)
+  Connect the TRIG pin of the HC-SR04 to GPIO 5 of the ESP32.
 
-SSD1306 OLED Display (I2C)
+  Connect the ECHO pin of the HC-SR04 to a voltage divider circuit (1KΩ + 2.2KΩ resistors) to reduce the voltage from 5V to 3.3V, then connect it to GPIO 18 of the ESP32.
 
-VCC → 3.3V
+  # Connecting the I2C LCD Display to ESP32:
+  
+  Connect the VCC pin of the I2C LCD to the 5V pin of the ESP32.
 
-GND → GND
+  Connect the GND pin of the I2C LCD to the GND pin of the ESP32.
 
-SDA → GPIO 21
+  Connect the SDA pin of the I2C LCD to GPIO 21 of the ESP32.
 
-SCL → GPIO 22
+  Connect the SCL pin of the I2C LCD to GPIO 22 of the ESP32.
+  
+  # Why ESP32 Instead of Arduino?
+  
+  ✔ Wi-Fi and Bluetooth support (Can be expanded for IoT monitoring).
 
-Buzzer (Optional)
+  ✔ Faster processing than Arduino.
 
-+ve → GPIO 15
+  ✔ More GPIOs & supports 3.3V sensors directly.
 
-GND → GND
-
-How It Works:
-ESP32 reads distance from the HC-SR04 Ultrasonic Sensor.
-
-Calculates water level as a percentage of tank capacity.
-
-Displays the water level on Serial Monitor & OLED Display.
-
-If the water level is below 20%, the buzzer alerts.
-
-Why ESP32 Instead of Arduino?
-✔ Wi-Fi and Bluetooth support (Can be expanded for IoT monitoring).
-✔ Faster processing than Arduino.
-✔ More GPIOs & supports 3.3V sensors directly.
-
-Let me know if you need modifications, like Wi-Fi monitoring via a web dashboard! 🚀💧
