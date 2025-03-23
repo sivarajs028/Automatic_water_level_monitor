@@ -1,0 +1,76 @@
+#include <Wire.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+#define TRIG_PIN 5
+#define ECHO_PIN 18
+#define BUZZER 15  // Optional buzzer
+
+const int tankHeight = 30; // Tank height in cm
+
+void setup() {
+    Serial.begin(115200);
+    pinMode(TRIG_PIN, OUTPUT);
+    pinMode(ECHO_PIN, INPUT);
+    pinMode(BUZZER, OUTPUT);
+
+    // Initialize OLED Display
+    if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+        Serial.println("SSD1306 allocation failed");
+        for (;;);
+    }
+    display.clearDisplay();
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.print("Water Level:");
+    display.display();
+}
+
+float getWaterLevel() {
+    digitalWrite(TRIG_PIN, LOW);
+    delayMicroseconds(2);
+    digitalWrite(TRIG_PIN, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(TRIG_PIN, LOW);
+
+    long duration = pulseIn(ECHO_PIN, HIGH);
+    float distance = duration * 0.034 / 2; // Convert to cm
+
+    float waterLevel = tankHeight - distance;
+    if (waterLevel < 0) waterLevel = 0; // Avoid negative values
+    return waterLevel;
+}
+
+void loop() {
+    float waterLevel = getWaterLevel();
+    int percentage = (waterLevel / tankHeight) * 100;
+
+    Serial.print("Water Level: ");
+    Serial.print(waterLevel);
+    Serial.print(" cm (");
+    Serial.print(percentage);
+    Serial.println("%)");
+
+    // Display on OLED
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.print("Water Level Monitor");
+    display.setCursor(0, 20);
+    display.print("Level: ");
+    display.print(percentage);
+    display.print("%");
+    display.display();
+
+    // Alert when water level is below 20%
+    if (percentage < 20) {
+        digitalWrite(BUZZER, HIGH);
+    } else {
+        digitalWrite(BUZZER, LOW);
+    }
+
+    delay(2000); // Update every 2 seconds
+}
