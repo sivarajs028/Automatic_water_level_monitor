@@ -67,4 +67,3 @@ void loop() {
 
     delay(2000); // Update every 2 seconds
 }
-
